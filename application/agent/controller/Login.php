@@ -7,10 +7,10 @@ class Login
     {
         $request = request();
         $search=[
-            'agent_acc'=>input('?post.username'),
+            'agent_acc'=>input('post.username'),
         ];
         $user = db('agent')->where($search)->find();
-        if($user['agent_pwd']!==md5(input('?post.password'))){
+        if($user['agent_pwd']!==md5(input('post.password'))){
             return ['data'=>[],'code'=>201,'message'=>'用户名或密码不正确！'];
         }
         if($user['status']!==0){

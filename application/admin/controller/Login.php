@@ -7,10 +7,10 @@ class Login
     {
         $request = request();
         $search=[
-            'admin_account'=>input('?post.username'),
+            'admin_account'=>input('post.username'),
         ];
         $user = db('admin_user')->where($search)->find();
-        if($user['admin_password']!==md5(input('?post.password'))){
+        if($user['admin_password']!==md5(input('post.password'))){
             return ['data'=>[],'code'=>201,'message'=>'用户名或密码不正确！'];
         }
         if($user['admin_status']!==0){

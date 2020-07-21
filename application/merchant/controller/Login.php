@@ -7,10 +7,10 @@ class Login
     {
         $request = request();
         $search=[
-            'mer_acc'=>input('?post.username'),
+            'mer_acc'=>input('post.username'),
         ];
         $user = db('merchant')->where($search)->find();
-        if($user['mer_pwd']!==md5(input('?post.password'))){
+        if($user['mer_pwd']!==md5(input('post.password'))){
             return ['data'=>[],'code'=>201,'message'=>'用户名或密码不正确！'];
         }
         if($user['status']!==0){

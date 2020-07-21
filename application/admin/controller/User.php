@@ -31,6 +31,21 @@ class User extends Base
         $user = db(self::$table)->where($search)->find();
         return ['data'=>$user,'code'=>200,'message'=>'操作完成'];
     }
+    public function modify()
+    {
+        $search=[
+            'admin_id'=> parent::$id
+        ];
+        $user = db(self::$table)->where($search)->find();
+        if($user['admin_password']!==md5(input('post.oldPassword'))){
+            return ['data'=>false,'code'=>201,'message'=>'原密码错误！'];
+        }else{
+            db(self::$table)->where($search)->update(['admin_password'=>md5(input('post.newPassword'))]);
+            return ['data'=>true,'code'=>200,'message'=>'操作完成'];
+        }
+       
+    }
+
     public function add()
     {
         $data = request()->post();
