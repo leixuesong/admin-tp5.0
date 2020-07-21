@@ -28,7 +28,7 @@ class User extends Base
         $search=[
             'admin_id'=> parent::$id
         ];
-        $user = db(self::$table)->where($search)->find();
+        $user = db(self::$table)->field(['admin_account','admin_phone','admin_email','admin_remarks','admin_status'])->where($search)->find();
         return ['data'=>$user,'code'=>200,'message'=>'操作完成'];
     }
     public function modify()
@@ -61,12 +61,9 @@ class User extends Base
     public function edit()
     {
         $data = request()->post();
-        $number = db(self::$table)->update($data);
-        if($number === 0){
-        return ['data'=>[],'code'=>201,'message'=>'操作失败'];
-        }else{
+        $data['admin_update_time']=date('Y-m-d H:i:s');
+        $number = db(self::$table)->where(['admin_id'=> parent::$id])->update($data);
         return ['data'=>[],'code'=>200,'message'=>'操作成功'];
-        }
 
     }
     

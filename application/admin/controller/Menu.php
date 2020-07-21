@@ -45,11 +45,7 @@ class Menu extends Base
     {
         $data = request()->post();
         $number = db(self::$table)->update($data);
-        if($number === 0){
-        return ['data'=>[],'code'=>201,'message'=>'操作失败'];
-        }else{
         return ['data'=>[],'code'=>200,'message'=>'操作成功'];
-        }
 
     }
 }

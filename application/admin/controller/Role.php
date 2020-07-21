@@ -18,13 +18,13 @@ class Role extends Base
     }
     public function all()
     {
-        $list = db(self::$table)->where(['status'=>0])->select();
+        $list = db(self::$table)->where(['status'=>0])->field('role_id,name')->select();
         return ['data'=>$list,'code'=>200,'message'=>'操作完成'];
     }
     public function info()
     {
         $search=[
-            'node_id'=> input('post.id',1)
+            'role_id'=> input('post.id',1)
         ];
         $user = db(self::$table)->where($search)->find();
         return ['data'=>$user,'code'=>200,'message'=>'操作完成'];
@@ -44,7 +44,7 @@ class Role extends Base
     public function edit()
     {
         $data = request()->post();
-        $number = db(self::$table)->update($data);
+        $number = db(self::$table)->where(['role_id'=>input('post.role_id')])->update($data);
         if($number === 0){
         return ['data'=>[],'code'=>201,'message'=>'操作失败'];
         }else{
