@@ -20,6 +20,17 @@ class Merchant extends Base
         ->where($search)->page(self::$pageNum, self::$pageSize)->select();
         $total = db(self::$table)->where($search)->count();
         return ['data'=>compact('data','total'),'code'=>200,'message'=>'操作完成'];
+    } 
+    public function info()
+    {
+        $agent = db(self::$table)->where(['mer_id'=>input('post.mer_id')])->field('mer_id,permit_IP')->find();
+        return ['data'=>$agent,'code'=>200,'message'=>'操作完成'];
+    }
+    public function modify()
+    {
+        $data = request()->post();
+        $agent = db(self::$table)->where(['mer_id'=>$data['mer_id']])->update($data);
+        return ['data'=>$agent,'code'=>200,'message'=>'操作完成'];
     }
     public function all()
     {

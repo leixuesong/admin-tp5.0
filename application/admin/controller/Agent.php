@@ -26,6 +26,17 @@ class Agent extends Base
         $list = db(self::$table)->where(['status'=>0])->select();
         return ['data'=>$list,'code'=>200,'message'=>'操作完成'];
     }
+    public function info()
+    {
+        $agent = db(self::$table)->where(['agent_id'=>input('post.agent_id')])->field('agent_id,permit_IP')->find();
+        return ['data'=>$agent,'code'=>200,'message'=>'操作完成'];
+    }
+    public function modify()
+    {
+        $data = request()->post();
+        $agent = db(self::$table)->where(['agent_id'=>$data['agent_id']])->update($data);
+        return ['data'=>$agent,'code'=>200,'message'=>'操作完成'];
+    }
     public function reset()
     {
         $search=[

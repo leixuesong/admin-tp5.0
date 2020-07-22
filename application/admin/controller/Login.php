@@ -21,7 +21,12 @@ class Login
             return ['data'=>[],'code'=>201,'message'=>'该IP不在白名单列表中'];
         }
         $token = md5($user['admin_id'].time());
-        db('admin_user')->where('admin_id',$user['admin_id'])->setField('admin_session_sign', $token);
+        $loginData = [
+            'admin_session_sign'=> $token,
+            'login_count'=>$user['login_count']+1,
+            'last_login_ip'=>$request->ip()
+        ];
+        db('admin_user')->where('admin_id',$user['admin_id'])->update($loginData);
         return ['data'=>compact('token'),'code'=>200,'message'=>'操作完成'];
         
     }
