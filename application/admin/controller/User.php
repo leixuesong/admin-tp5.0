@@ -14,7 +14,9 @@ class User extends Base
         if(input('post.admin_account')){
             $search['admin_account'] = ['like','%'.input('post.admin_account').'%'];
         }
-        $data = db(self::$table)->where($search)->page(self::$pageNum, self::$pageSize)->select();
+        $data = db(self::$table)
+        ->join('admin_role',self::$table.'.admin_role_id = admin_role.role_id','left')
+        ->where($search)->field(self::$table.'.*,admin_role.name as role_name')->page(self::$pageNum, self::$pageSize)->select();
         $total = db(self::$table)->where($search)->count();
         return ['data'=>compact('data','total'),'code'=>200,'message'=>'操作完成'];
     }
@@ -26,9 +28,35 @@ class User extends Base
     public function info()
     {
         $search=[
+            'admin_id'=> input('post.id')
+        ];
+        $user = db(self::$table)
+        ->field(['admin_id','admin_account','admin_role_id','admin_phone','admin_email','admin_remarks','admin_status'])->where($search)->find();
+        return ['data'=>$user,'code'=>200,'message'=>'操作完成'];
+    }
+    public function getuserinfo()
+    {
+        $search=[
             'admin_id'=> parent::$id
         ];
-        $user = db(self::$table)->field(['admin_account','admin_phone','admin_email','admin_remarks','admin_status'])->where($search)->find();
+        $user = db(self::$table)
+        ->join('admin_role',self::$table.'.admin_role_id = admin_role.role_id','left')
+        ->field(['admin_account','admin_role_id','node_id','admin_phone','admin_email','admin_remarks','admin_status'])->where($search)->find();
+        $nodeList =  db('admin_node')->where(['node_id'=>['in',$user['node_id']]])->select();
+        $menu = [];
+        foreach($nodeList as $item){
+            $menuItem =[
+              'path'=> '/' .$item['controller'],
+              'children'=>[[
+                    'path'=>$item['method'],
+                    'name'=>$item['controller'] .'-'.$item['method'],
+                    'view'=>$item['controller']."/".$item['method'],
+                    'meta'=>['title'=>$item['name'],'icon'=>$item['icon']]
+              ]]
+            ];
+            array_push($menu,$menuItem);
+    }
+    $user['menu'] = $menu;
         return ['data'=>$user,'code'=>200,'message'=>'操作完成'];
     }
     public function modify()
@@ -49,6 +77,7 @@ class User extends Base
     public function add()
     {
         $data = request()->post();
+        $data['admin_create_time'] = date('Y-m-d H:i:s');
         $number = db(self::$table)->insert($data);
         if($number === 1){
             return ['data'=>[],'code'=>200,'message'=>'操作成功'];
@@ -62,9 +91,8 @@ class User extends Base
     {
         $data = request()->post();
         $data['admin_update_time']=date('Y-m-d H:i:s');
-        $number = db(self::$table)->where(['admin_id'=> parent::$id])->update($data);
+        $number = db(self::$table)->where(['admin_id'=> $data['admin_id']])->update($data);
         return ['data'=>[],'code'=>200,'message'=>'操作成功'];
-
     }
     
     public function delete()

@@ -24,14 +24,17 @@ class Role extends Base
     public function info()
     {
         $search=[
-            'role_id'=> input('post.id',1)
+            'role_id'=> input('post.id')
         ];
         $user = db(self::$table)->where($search)->find();
+        $user['node_list'] =array_map('intval', explode(',',$user['node_id']));
         return ['data'=>$user,'code'=>200,'message'=>'操作完成'];
     }
     public function add()
     {
         $data = request()->post();
+        $data['node_id'] = implode(',',$data['node_list']);
+        unset($data['node_list']);
         $number = db(self::$table)->insert($data);
         if($number === 1){
             return ['data'=>[],'code'=>200,'message'=>'操作成功'];
@@ -44,6 +47,8 @@ class Role extends Base
     public function edit()
     {
         $data = request()->post();
+        $data['node_id'] = implode(',',$data['node_list']);
+        unset($data['node_list']);
         $number = db(self::$table)->where(['role_id'=>input('post.role_id')])->update($data);
         if($number === 0){
         return ['data'=>[],'code'=>201,'message'=>'操作失败'];

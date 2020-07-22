@@ -18,7 +18,7 @@ class Menu extends Base
     }
     public function all()
     {
-        $list = db(self::$table)->where(['status'=>0])->select();
+        $list = db(self::$table)->where(['status'=>0])->field('node_id,name')->select();
         return ['data'=>$list,'code'=>200,'message'=>'操作完成'];
     }
     public function info()
@@ -44,7 +44,7 @@ class Menu extends Base
     public function edit()
     {
         $data = request()->post();
-        $number = db(self::$table)->update($data);
+        $number = db(self::$table)->where(['node_id'=>$data['node_id']])->update($data);
         return ['data'=>[],'code'=>200,'message'=>'操作成功'];
 
     }
