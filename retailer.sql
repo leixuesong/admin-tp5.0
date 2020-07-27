@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2020-07-20 16:00:57
+Date: 2020-07-24 12:28:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,34 +31,39 @@ CREATE TABLE `admin_node` (
   `icon` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '图标',
   `status` tinyint(1) unsigned DEFAULT 0 COMMENT '节点状态: 0 正常 1 停用',
   PRIMARY KEY (`node_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of admin_node
 -- ----------------------------
-INSERT INTO `admin_node` VALUES ('1', '111', '0', '0', '0', '1', '1', null, '1', '1');
-INSERT INTO `admin_node` VALUES ('2', '444', '0', '0', '0', '44', '444', null, '44', '0');
-INSERT INTO `admin_node` VALUES ('3', '6777', '0', '0', '0', '66', '66', null, '66', '1');
-INSERT INTO `admin_node` VALUES ('4', '444', '0', '1', '0', '44', '44', null, '44', '1');
-INSERT INTO `admin_node` VALUES ('5', '11', '0', '0', '0', '11', '11', null, '11', '0');
+INSERT INTO `admin_node` VALUES ('1', '菜单管理', '0', '0', '0', 'menu', 'index', null, 'el-icon-s-order', '0');
+INSERT INTO `admin_node` VALUES ('2', '角色管理', '0', '0', '0', 'role', 'index', null, 'el-icon-setting', '0');
+INSERT INTO `admin_node` VALUES ('3', '用户管理', '0', '0', '0', 'user', 'index', null, 'el-icon-s-custom', '0');
+INSERT INTO `admin_node` VALUES ('4', '日志管理', '0', '0', '0', 'journal', 'index', null, 'el-icon-tickets', '0');
+INSERT INTO `admin_node` VALUES ('5', '代理商管理', '0', '0', '0', 'agent', 'index', null, 'el-icon-office-building', '0');
+INSERT INTO `admin_node` VALUES ('6', '商户管理', '0', '0', '0', 'merchant', 'index', null, 'el-icon-s-home', '0');
+INSERT INTO `admin_node` VALUES ('7', '订单管理', '0', '0', '0', 'order', 'index', null, 'el-icon-s-order', '0');
+INSERT INTO `admin_node` VALUES ('8', '分润管理', '0', '0', '0', 'profit', 'index', null, 'el-icon-coin', '0');
 
 -- ----------------------------
 -- Table structure for admin_role
 -- ----------------------------
 DROP TABLE IF EXISTS `admin_role`;
 CREATE TABLE `admin_role` (
-  `role_id` int(4) unsigned NOT NULL COMMENT '主键',
+  `role_id` int(4) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '名称',
   `status` tinyint(1) unsigned NOT NULL COMMENT '状态 0 正常 1 停用',
   `remarks` varchar(150) COLLATE utf8_bin DEFAULT NULL COMMENT '备注',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `node_id` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '节点id,逗号分隔',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of admin_role
 -- ----------------------------
+INSERT INTO `admin_role` VALUES ('1', '管理员', '0', '超级管理员', null, '1,3,7,6,5,4,2,8');
+INSERT INTO `admin_role` VALUES ('2', '财务', '0', '财务管理员', null, '7,8');
 
 -- ----------------------------
 -- Table structure for admin_user
@@ -68,7 +73,7 @@ CREATE TABLE `admin_user` (
   `admin_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `admin_account` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '账号',
   `admin_password` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '密码',
-  `last_login_ip` varchar(25) COLLATE utf8_bin NOT NULL COMMENT '最后登录IP',
+  `last_login_ip` varchar(25) COLLATE utf8_bin NOT NULL DEFAULT '0' COMMENT '最后登录IP',
   `login_count` int(6) unsigned DEFAULT NULL COMMENT '登录计数',
   `admin_phone` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '管理员手机号',
   `admin_email` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '管理员邮箱',
@@ -77,7 +82,7 @@ CREATE TABLE `admin_user` (
   ` verify_key` varchar(80) COLLATE utf8_bin DEFAULT NULL COMMENT 'google验证密钥',
   `admin_verify` varchar(10) COLLATE utf8_bin DEFAULT NULL COMMENT '短信验证码',
   `verify_passtime` datetime DEFAULT NULL COMMENT '短信过期时间',
-  `verify_type` tinyint(1) unsigned NOT NULL COMMENT '验证方式 0.短信验证 1.google 身份证',
+  `verify_type` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '验证方式 0.短信验证 1.google 身份证',
   `admin_permit_ip` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '白名单IP',
   `admin_session_sign` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '单点登录session',
   `admin_create_time` datetime NOT NULL COMMENT '创建时间',
@@ -87,12 +92,13 @@ CREATE TABLE `admin_user` (
   `admin_date` date DEFAULT NULL COMMENT '操作日期',
   `admin_time` time DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`admin_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of admin_user
 -- ----------------------------
-INSERT INTO `admin_user` VALUES ('1', '1', 'c4ca4238a0b923820dcc509a6f75849b', '1', null, null, null, null, '0', '1', null, null, '1', null, '04509a81d0065fc052bed187a5af2bdf', '2020-07-15 13:44:30', null, null, null, null, null);
+INSERT INTO `admin_user` VALUES ('1', '1', '202cb962ac59075b964b07152d234b70', '127.0.0.1', '3', '13294162811', '1234@1.com', '财务', '0', '1', null, null, '1', null, '3d7692e2a3fc01e56602d61704210828', '2020-07-15 13:44:30', '2020-07-22 10:39:43', null, '2', null, null);
+INSERT INTO `admin_user` VALUES ('2', 'admin', '202cb962ac59075b964b07152d234b70', '0', '1', '13294162800', '4@1.com', '超级管理员', '0', null, null, null, '0', null, '2091ec397f4a39464a63a9cbb72b6584', '2020-07-21 17:52:34', '2020-07-22 10:39:47', null, '1', null, null);
 
 -- ----------------------------
 -- Table structure for agent
@@ -126,7 +132,7 @@ CREATE TABLE `agent` (
 -- ----------------------------
 -- Records of agent
 -- ----------------------------
-INSERT INTO `agent` VALUES ('1', '1', 'c4ca4238a0b923820dcc509a6f75849b', null, null, null, null, '0', null, '1', '97f597a2d17ef2325877b1681dff8d15', '0', null, null, '1', null, null, null, '1', '2020-07-20 14:18:03', '2020-07-20 14:18:05');
+INSERT INTO `agent` VALUES ('1', '1', 'e10adc3949ba59abbe56e057f20f883e', '127.0.0.1', null, null, null, '0', null, '1', 'f3ce01b3d5698958052315fb70a84a53', '0', null, null, '1', null, null, null, '1', '2020-07-20 14:18:03', '2020-07-20 14:18:05');
 
 -- ----------------------------
 -- Table structure for commodity
