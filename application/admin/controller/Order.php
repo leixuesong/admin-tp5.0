@@ -4,7 +4,7 @@ use app\admin\controller\Base;
 
 class Order extends Base
 {
-    protected static $table='`order`';
+    protected static $table='order';
 
     public function index()
     {

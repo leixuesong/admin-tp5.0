@@ -17,7 +17,7 @@ class Merchant extends Base
         }
         $data = db(self::$table)
         ->join('agent',self::$table.'.agent_id = agent.agent_id','left')
-        ->where($search)->page(self::$pageNum, self::$pageSize)->select();
+        ->where($search)->page(self::$pageNum, self::$pageSize)->field(self::$table.'.*,agent.agent_acc')->select();
         $total = db(self::$table)->where($search)->count();
         return ['data'=>compact('data','total'),'code'=>200,'message'=>'操作完成'];
     } 
