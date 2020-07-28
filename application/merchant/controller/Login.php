@@ -31,4 +31,15 @@ class Login
         return ['data'=>compact('token'),'code'=>200,'message'=>'操作完成'];
         
     }
+public function upload(){
+    $file = request()->file('file');
+    if($file){
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+        if($info){
+            return ['data'=>['path'=>$info->getSaveName()],'code'=>200,'message'=>'上传成功'];
+        }else{
+            return ['data'=>false,'code'=>200,'message'=>$file->getError()];
+        }
+    }
+}
 }

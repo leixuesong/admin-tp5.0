@@ -22,9 +22,19 @@ class Product extends Base
         $total = db(self::$table)->where($search)->count();
         return ['data'=>compact('data','total'),'code'=>200,'message'=>'操作完成'];
     }
+    public function info()
+    {
+        $search=[
+            'comm_id'=> input('post.id')
+        ];
+        $user = db(self::$table)->field('create_time,mer_id',true)->where($search)->find();
+        return ['data'=>$user,'code'=>200,'message'=>'操作完成'];
+    }
     public function add()
     {
         $data = request()->post();
+        $data['mer_id'] = parent::$id;
+        $data['create_time'] = date('Y-m-d H:i:s');
         $number = db(self::$table)->insert($data);
         if($number === 1){
             return ['data'=>[],'code'=>200,'message'=>'操作成功'];
@@ -37,7 +47,7 @@ class Product extends Base
     public function edit()
     {
         $data = request()->post();
-        $number = db(self::$table)->where(['node_id'=>$data['node_id']])->update($data);
+        $number = db(self::$table)->where(['comm_id'=>$data['comm_id']])->update($data);
         return ['data'=>[],'code'=>200,'message'=>'操作成功'];
 
     }

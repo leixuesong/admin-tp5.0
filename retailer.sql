@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2020-07-24 12:28:22
+Date: 2020-07-28 11:01:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -148,11 +148,12 @@ CREATE TABLE `commodity` (
   `status` tinyint(1) unsigned NOT NULL COMMENT '状态: 0正常 1 停用  2 待审核',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`comm_id`,`mer_id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of commodity
 -- ----------------------------
+INSERT INTO `commodity` VALUES ('1', '2222', '20200728\\a0b1722b4a17d3904fe0990e2d144aa3.png', '1222222', '22.00', '1', '1', '2020-07-28 10:46:57');
 
 -- ----------------------------
 -- Table structure for merchant
@@ -162,7 +163,7 @@ CREATE TABLE `merchant` (
   `mer_id` int(6) unsigned NOT NULL AUTO_INCREMENT,
   `mer_acc` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '商户账号',
   `mer_pwd` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '商户密码',
-  `permit_IP` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '白名单IP(以逗号分割,不限制为空)',
+  `permit_ip` varchar(255) COLLATE utf8_bin DEFAULT '' COMMENT '白名单IP(以逗号分割,不限制为空)',
   `last_log_ip` varchar(25) COLLATE utf8_bin DEFAULT NULL COMMENT '最后登录ip',
   `last_login_time` datetime DEFAULT NULL COMMENT '最后登陆时间',
   `login_count` int(6) unsigned DEFAULT NULL COMMENT '登录计数',
@@ -174,15 +175,16 @@ CREATE TABLE `merchant` (
   `verify_key` varchar(80) COLLATE utf8_bin DEFAULT NULL COMMENT 'google验证密钥',
   `sms_verify` varchar(10) COLLATE utf8_bin DEFAULT NULL COMMENT '短信验证码',
   `sms_passtime` datetime DEFAULT NULL COMMENT '短信过期时间',
-  `app_key` varchar(80) COLLATE utf8_bin NOT NULL COMMENT 'app加密key 随机32 位字符',
+  `app_key` varchar(80) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT 'app加密key 随机32 位字符',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`mer_id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of merchant
 -- ----------------------------
+INSERT INTO `merchant` VALUES ('1', '1', 'e10adc3949ba59abbe56e057f20f883e', null, '127.0.0.1', '2020-07-28 10:16:37', '2', '0', null, null, '2e1a9962ee3104bf9ea15d968028efca', null, null, null, null, '', '2020-07-28 10:13:12', '2020-07-28 10:13:14');
 
 -- ----------------------------
 -- Table structure for order
