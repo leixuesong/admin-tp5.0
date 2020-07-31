@@ -28,11 +28,18 @@ class Menu extends Base
             'node_id'=> input('post.id',1)
         ];
         $user = db(self::$table)->where($search)->find();
+        $result = db(self::$table)->where(['status'=>0])->field('node_id,pid,name')->select();
+        $user['pidList'] = getParent($result,$user['node_id']);
         return ['data'=>$user,'code'=>200,'message'=>'操作完成'];
     }
     public function add()
     {
         $data = request()->post();
+        unset($data['pidList']);
+        if(input('post.pid') != 0){
+           $parent =  db(self::$table)->where(['node_id'=>input('post.pid')])->field('level')->find($data);
+           $data['level'] = $parent['level'] +1;
+        }
         $number = db(self::$table)->insert($data);
         if($number === 1){
             return ['data'=>[],'code'=>200,'message'=>'操作成功'];
@@ -45,6 +52,12 @@ class Menu extends Base
     public function edit()
     {
         $data = request()->post();
+        unset($data['pidList']);
+        if(input('post.pid') != 0){
+           $parent =  db(self::$table)->where(['node_id'=>input('post.pid')])
+           ->field('level')->find();
+           $data['level'] = $parent['level'] +1;
+        }
         $number = db(self::$table)->where(['node_id'=>$data['node_id']])->update($data);
         return ['data'=>[],'code'=>200,'message'=>'操作成功'];
 
