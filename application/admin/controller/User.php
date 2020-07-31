@@ -42,21 +42,7 @@ class User extends Base
         $user = db(self::$table)
         ->join('admin_role',self::$table.'.admin_role_id = admin_role.role_id','left')
         ->field(['admin_account','admin_role_id','node_id','admin_phone','admin_email','admin_remarks','admin_status'])->where($search)->find();
-        $nodeList =  db('admin_node')->where(['node_id'=>['in',$user['node_id']]])->select();
-        $menu = [];
-        foreach($nodeList as $item){
-            $menuItem =[
-              'path'=> '/' .$item['controller'],
-              'children'=>[[
-                    'path'=>$item['method'],
-                    'name'=>$item['controller'] .'-'.$item['method'],
-                    'view'=>$item['controller']."/".$item['method'],
-                    'meta'=>['title'=>$item['name'],'icon'=>$item['icon']]
-              ]]
-            ];
-            array_push($menu,$menuItem);
-    }
-    $user['menu'] = $menu;
+        $user['menu'] =  db('admin_node')->where(['node_id'=>['in',$user['node_id']]])->select();
         return ['data'=>$user,'code'=>200,'message'=>'操作完成'];
     }
     public function modify()

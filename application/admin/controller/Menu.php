@@ -12,13 +12,14 @@ class Menu extends Base
         if(input('post.name')){
             $search['name'] = ['like','%'.input('post.name').'%'];
         }
-        $data = db(self::$table)->where($search)->page(self::$pageNum, self::$pageSize)->select();
-        $total = db(self::$table)->where($search)->count();
-        return ['data'=>compact('data','total'),'code'=>200,'message'=>'操作完成'];
+        $result = db(self::$table)->where($search)->select();
+        $data = createTree($result);
+        return ['data'=>compact('data'),'code'=>200,'message'=>'操作完成'];
     }
     public function all()
     {
-        $list = db(self::$table)->where(['status'=>0])->field('node_id,name')->select();
+        $result = db(self::$table)->where(['status'=>0])->field('node_id,pid,name')->select();
+        $list = createTree($result);
         return ['data'=>$list,'code'=>200,'message'=>'操作完成'];
     }
     public function info()
