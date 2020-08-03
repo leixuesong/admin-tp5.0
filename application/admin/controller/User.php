@@ -37,14 +37,22 @@ class User extends Base
     public function getuserinfo()
     {
         $search=[
-            'admin_id'=> parent::$id
+            'admin_id'=> 2
         ];
         $user = db(self::$table)
         ->join('admin_role',self::$table.'.admin_role_id = admin_role.role_id','left')
         ->field(['admin_account','admin_role_id','node_id','admin_phone','admin_email','admin_remarks','admin_status'])->where($search)->find();
-        $user['menu'] = db('admin_node')->where(['node_id'=>['in',$user['node_id']]])->select();
+        $result = db('admin_node')->where(['status'=>0,'node_id'=>['in',$user['node_id']]])->select();
+        $nodeList = db('admin_node')->where(['status'=>0])->select();
         $buttons = [];
-        foreach($user['menu'] as $key=>$item){
+        // 循环获取所有节点的父级节点
+        foreach($result as $key=>$item){
+            $user['menu'] = getParentNodes($nodeList,$item);
+        }
+        //父级节点和当前节点合并
+        $allNodes = array_merge($user['menu'],$result);
+        //生成按钮节点
+        foreach($allNodes as $key=>$item){
             if($item['level'] === 3){
                 $buttons[$item['controller']][] = $item['method'];  
                 unset($user['menu'][$key]);
