@@ -37,7 +37,7 @@ class User extends Base
     public function getuserinfo()
     {
         $search=[
-            'admin_id'=> 2
+            'admin_id'=> parent::$id
         ];
         $user = db(self::$table)
         ->join('admin_role',self::$table.'.admin_role_id = admin_role.role_id','left')

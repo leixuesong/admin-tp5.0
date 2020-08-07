@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2020-07-31 12:23:22
+Date: 2020-08-07 22:04:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,30 +24,39 @@ CREATE TABLE `admin_node` (
   `name` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '节点名称',
   `sort` int(5) unsigned NOT NULL DEFAULT 0 COMMENT '节点排序',
   `pid` int(5) unsigned NOT NULL COMMENT '父级节点',
-  `level` int(1) unsigned NOT NULL DEFAULT 0 COMMENT '节点级别',
+  `level` int(1) unsigned NOT NULL DEFAULT 1 COMMENT '节点级别',
   `controller` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '请求控制',
   `method` varchar(80) COLLATE utf8_bin NOT NULL COMMENT '请求方法',
   `style` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '附加样式',
   `icon` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '图标',
   `status` tinyint(1) unsigned DEFAULT 0 COMMENT '节点状态: 0 正常 1 停用',
   PRIMARY KEY (`node_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of admin_node
 -- ----------------------------
-INSERT INTO `admin_node` VALUES ('1', '菜单管理', '0', '9', '0', 'menu', 'index', null, 'el-icon-s-order', '0');
-INSERT INTO `admin_node` VALUES ('2', '角色管理', '0', '9', '0', 'role', 'index', null, 'el-icon-setting', '0');
-INSERT INTO `admin_node` VALUES ('3', '用户管理', '0', '9', '0', 'user', 'index', null, 'el-icon-s-custom', '0');
-INSERT INTO `admin_node` VALUES ('4', '日志管理', '0', '9', '0', 'journal', 'index', null, 'el-icon-tickets', '0');
-INSERT INTO `admin_node` VALUES ('5', '代理商管理', '0', '10', '0', 'agent', 'index', null, 'el-icon-office-building', '0');
-INSERT INTO `admin_node` VALUES ('6', '商户管理', '0', '0', '0', 'merchant', 'empty', null, 'el-icon-s-home', '0');
-INSERT INTO `admin_node` VALUES ('7', '订单管理', '0', '0', '0', 'order', 'empty', null, 'el-icon-s-order', '0');
-INSERT INTO `admin_node` VALUES ('8', '分润管理', '0', '7', '0', 'profit', 'index', null, 'el-icon-coin', '0');
-INSERT INTO `admin_node` VALUES ('9', '系统管理', '0', '0', '0', 'system', 'empty', null, 'el-icon-s-operation', '0');
-INSERT INTO `admin_node` VALUES ('10', '代理商管理', '0', '0', '0', 'agent', 'empty', null, 'el-icon-menu', '0');
-INSERT INTO `admin_node` VALUES ('11', '商户管理', '0', '6', '0', 'merchant', 'index', null, 'el-icon-s-shop', '0');
-INSERT INTO `admin_node` VALUES ('12', '订单管理', '0', '7', '0', 'order', 'index', null, 'el-icon-document', '0');
+INSERT INTO `admin_node` VALUES ('1', '菜单管理', '0', '9', '2', 'menu', 'index', null, 'el-icon-s-order', '0');
+INSERT INTO `admin_node` VALUES ('2', '角色管理', '0', '9', '2', 'role', 'index', null, 'el-icon-setting', '0');
+INSERT INTO `admin_node` VALUES ('3', '用户管理', '0', '9', '2', 'user', 'index', null, 'el-icon-s-custom', '0');
+INSERT INTO `admin_node` VALUES ('4', '日志管理', '0', '9', '2', 'journal', 'index', null, 'el-icon-tickets', '0');
+INSERT INTO `admin_node` VALUES ('5', '代理商管理', '0', '10', '2', 'agent', 'index', null, 'el-icon-office-building', '0');
+INSERT INTO `admin_node` VALUES ('6', '商户管理', '0', '0', '1', 'merchant', 'empty', null, 'el-icon-s-home', '0');
+INSERT INTO `admin_node` VALUES ('7', '订单管理', '0', '0', '1', 'order', 'empty', null, 'el-icon-s-order', '0');
+INSERT INTO `admin_node` VALUES ('8', '分润管理', '0', '7', '2', 'profit', 'index', null, 'el-icon-coin', '0');
+INSERT INTO `admin_node` VALUES ('9', '系统管理', '0', '0', '1', 'system', 'empty', null, 'el-icon-s-operation', '0');
+INSERT INTO `admin_node` VALUES ('10', '代理商管理', '0', '0', '1', 'agent', 'empty', null, 'el-icon-menu', '0');
+INSERT INTO `admin_node` VALUES ('11', '商户管理', '0', '6', '2', 'merchant', 'index', null, 'el-icon-s-shop', '0');
+INSERT INTO `admin_node` VALUES ('12', '订单管理', '0', '7', '2', 'order', 'index', null, 'el-icon-document', '0');
+INSERT INTO `admin_node` VALUES ('13', '添加', '0', '1', '3', 'menu-index', 'add', null, '', '0');
+INSERT INTO `admin_node` VALUES ('14', '编辑', '0', '1', '3', 'menu-index', 'edit', null, '', '0');
+INSERT INTO `admin_node` VALUES ('15', '添加', '0', '2', '3', 'role-index', 'add', null, '', '0');
+INSERT INTO `admin_node` VALUES ('16', '编辑', '0', '2', '3', 'role-index', 'edit', null, '', '0');
+INSERT INTO `admin_node` VALUES ('17', '添加', '0', '3', '3', 'user-index', 'add', null, '', '0');
+INSERT INTO `admin_node` VALUES ('18', '编辑', '0', '3', '3', 'user-index', 'edit', null, '', '0');
+INSERT INTO `admin_node` VALUES ('19', '删除', '0', '3', '3', 'user-index', 'delete', null, '', '0');
+INSERT INTO `admin_node` VALUES ('20', '停用', '0', '5', '3', 'agent-index', 'close', null, '', '0');
+INSERT INTO `admin_node` VALUES ('21', '重置密码', '0', '5', '3', 'agent-index', 'reset', null, '', '0');
 
 -- ----------------------------
 -- Table structure for admin_role
@@ -66,7 +75,7 @@ CREATE TABLE `admin_role` (
 -- ----------------------------
 -- Records of admin_role
 -- ----------------------------
-INSERT INTO `admin_role` VALUES ('1', '管理员', '0', '超级管理员', null, '1,2,3,4,5,6,7,8,9,10,11,12');
+INSERT INTO `admin_role` VALUES ('1', '管理员', '0', '超级管理员', null, '2,15,16,20');
 INSERT INTO `admin_role` VALUES ('2', '财务', '0', '财务管理员', null, '6,11,7,8,12');
 
 -- ----------------------------
@@ -101,8 +110,8 @@ CREATE TABLE `admin_user` (
 -- ----------------------------
 -- Records of admin_user
 -- ----------------------------
-INSERT INTO `admin_user` VALUES ('1', '1', '202cb962ac59075b964b07152d234b70', '127.0.0.1', '6', '13294162811', '1234@1.com', '财务', '0', '1', null, null, '1', null, 'cc36ef8cb9e43180e606384475894cdb', '2020-07-15 13:44:30', '2020-07-22 10:39:43', null, '2', null, null);
-INSERT INTO `admin_user` VALUES ('2', 'admin', '202cb962ac59075b964b07152d234b70', '127.0.0.1', '3', '13294162800', '4@1.com', '超级管理员', '0', null, null, null, '0', null, 'b75e7e6071dce746116f2b2011c5603d', '2020-07-21 17:52:34', '2020-07-22 10:39:47', null, '1', null, null);
+INSERT INTO `admin_user` VALUES ('1', '1', '202cb962ac59075b964b07152d234b70', '127.0.0.1', '7', '13294162811', '1234@1.com', '财务', '0', '1', null, null, '1', null, '479bb902b493fb46eeada86e1b81a70d', '2020-07-15 13:44:30', '2020-07-22 10:39:43', null, '2', null, null);
+INSERT INTO `admin_user` VALUES ('2', 'admin', '202cb962ac59075b964b07152d234b70', '127.0.0.1', '8', '13294162800', '4@1.com', '超级管理员', '0', null, null, null, '0', null, '6c1057d992e13d94d572dafef19dd366', '2020-07-21 17:52:34', '2020-07-22 10:39:47', null, '1', null, null);
 
 -- ----------------------------
 -- Table structure for agent
